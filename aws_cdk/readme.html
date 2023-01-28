@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>readme.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="aws-cdk">AWS CDK</h1>
+<h2 id="prerequisite">Prerequisite</h2>
+<ul>
+<li><a
+href="https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html">Install
+AWS CLI</a> :IAM User를 생성한 후 권한을 설정하고 CLI를 통해 machine에서
+사용할 수 있도록 keyid, secret을 설정</li>
+<li><dl>
+<dt>Install Node</dt>
+<dd>
+사용되는 언어와 상관없이 Node가 사용됨
+</dd>
+</dl></li>
+<li>Install AWS CDK</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install aws-cdk</span></code></pre></div>
+<ul>
+<li>Frist AWS CDK app</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> hello-cdk</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> hello-cdk</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> init app <span class="at">--language</span> typescript</span></code></pre></div>
+<ul>
+<li>Code Program</li>
+<li>Deploy</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> ls</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> synth</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> deploy</span></code></pre></div>
+<ul>
+<li>Modify Program</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> diff</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> deploy</span></code></pre></div>
+<ul>
+<li>Destroy app’s resources</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cdk</span> destroy</span></code></pre></div>
+
+</body>
+</html>

@@ -289,7 +289,7 @@ public class Cart {
 
 ## Usecase 6. Entity
 As a business User, I would like to differentiate between 2 Carts, even if they contain same item.
-- Application.java
+### Application.java
 ```java
 // Application.java
 Cart cart1 = new Cart();
@@ -312,7 +312,7 @@ Cart cart1 = new Cart();
         System.out.println(cart1.hasSameIdentityAs(cart2)? "true=Carts are same"  : "false=Carts are different");
         System.out.println("----------------------------------------");
 ```
-- Cart
+### Cart.java
 ```java
 public class Cart implements Entity<Cart> {
 
@@ -428,7 +428,138 @@ public class CartId {
     }
 }
 ```
+## DDD Concept 2 - Entity
+1. "Many objects are tno fundamentally defined by their attributes but rather by thread of continuity and identity" from evans book
+1. Entity has a life cycle
+1. Object defined primarily by its idenitty is called an Entity
 
 
+## Usecase 7
+Add Price to a Product. We need support for only one currency, say USD
+### ValueObject.java
+```java
+public interface ValueObject<T> {
+    boolean sameValueAs(T other);
+}
+```
+### Price.java
+```java
+public class Price implements ValueObject<Price> {
+    private BigDecimal value;
+    private Currency currency;
 
+    public Price(BigDecimal value, Currency currency) {
+        this.value = value;
+        this.currency = currency;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Price price = (Price) o;
+
+        if (!value.equals(price.value)) return false;
+        return currency.equals(price.currency);
+    }
+	
+    @Override
+    public int hashCode() {
+        int result = value.hashCode();
+        result = 31 * result + currency.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Price{" +
+                "value=" + value +
+                ", currency=" + currency +
+                '}';
+    }
+
+    @Override
+    public boolean sameValueAs(Price other) {
+        if (this == other) return true;
+        if (!value.equals(other.value)) return false;
+        return currency.equals(other.currency);
+    }
+}
+```
+## DDD Concept 3 Value Object
+1. Describe the characteristic of the thing
+1. Immutable. not mandatary. There might be cases where value object need to be mutable
+1
+
+## Usecase 8
+As a business User, I would like to price my product 10% below competitor price(competitor price is available for product)
+### CompetitorBasedPricer.java
+```java
+public class CompetitorBasedPricer {
+
+    static Map<String, Price> competitorPrices = new HashMap();
+    private static int discountPercentage = 10;
+
+    static {
+        competitorPrices.put("Apple Pencil", new Price(new BigDecimal(100), Currency.getInstance("USD")));
+        competitorPrices.put("Sony Wireless headphone", new Price(new BigDecimal(10), Currency.getInstance("USD")));
+    }
+
+    public static Price getPrice(String productName) {
+        Price price = competitorPrices.get(productName);
+        return price.reduceByPercent(discountPercentage);
+    }
+
+}
+```
+### Application.java
+```java
+public class Application {
+    public static void main(String[] args) {
+        Price applePencilPrice = CompetitorBasedPricer.getPrice("Apple Pencil");
+
+        System.out.println("Discounted Price for Apple Pencil: " + applePencilPrice);
+
+        Price sonyWirelessHeadphonePrice = CompetitorBasedPricer.getPrice("Sony Wireless headphone");
+
+        System.out.println("Discounted Price for Sony Wireless headphone: "
+                + sonyWirelessHeadphonePrice);
+
+        Cart cart = new Cart();
+
+        cart.add(new Item( new Product("Apple Pencil",applePencilPrice), 1));
+        cart.add(new Item( new Product("Sony Wireless headphone",sonyWirelessHeadphonePrice), 1));
+
+        System.out.println("cart = " + cart);
+ 
+    }
+}
+```
+## DDD Concept 4 - Domain Service
+1. Verb and not noun, More like business process
+1. When a significant process or transformation in the domain is not a natural responsibility of an Entity of Value Object, add an operation to the model as a standalone interface declared as a Service. Define the interface in terms of the language of the model and make sure the operation name is part of the Ubiquitous Language
+1. Domain Service is not an application servivce
+1. Application service should not have business logic
+1. Application Service is just a Adapter outside Domain Layer in Hexagonal Architecture and 3 tier architecture outside Domain Layer
+
+## Improving/Refactoring Existing Code Base
+1. Look for domain/business logic which has leaked into application services or controllers or repository
+1. Move logic to Domain Layer/Domain Model using Entity, Value Object and Domain Services. Use Language of Domain which is already known to Domain experts for naming Entity, Value Object and Domain Services and even Domain Events.
+1. Domain Event is optional
+1. Domain Layer/Domain Model classes under domain package should not talk to anything external like databases, file systems, other microservices, etc.
+1. Use technique liek Stragler Fig Pattern to slowly changee one microservice at a time to user DDD
+
+## Usecase 9 - Aggregate
+Create Order(with Products) when Cart is checked out. Also, mark Cart as checked out.
+Note: While creating order please don't use Item class but use Product class. Flatten out products in item.
+
+```java
+```
+## Books to read
+1. evans book - Hard to read
+1. Patterns, Principles, and Practices of Domain-Driven Design: Easy to read
+1. Learning Domain-Driven Design: published 2021
+1. Implementing DDD
+1. Domain Story Telling: Identify bounded context
+1. Event Storming

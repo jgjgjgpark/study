@@ -1,0 +1,10 @@
+@startuml
+OAuth2AuthorizationServerConfigurer -- OAuth2ClientAuthenticationConfigurer
+OAuth2AuthorizationServerConfigurer -- OAuth2AuthorizationServerMetadataEndpointConfigurer
+OAuth2AuthorizationServerConfigurer -- OAuth2AuthorizationEndpointConfigurer
+OAuth2AuthorizationServerConfigurer -- OAuth2TokenEndpointConfigurer
+OAuth2AuthorizationServerConfigurer -- OAuth2TokenIntrospectionEndpointConfigurer
+OAuth2AuthorizationServerConfigurer -- OAuth2TokenRevocationEndpointConfigurer
+
+
+@enduml
